@@ -1,5 +1,5 @@
 <?php
-class TesterMigrationUntils
+trait TesterMigrationUntils
 {
     public function isAllMigrationsMade() {
         // get last migration version
@@ -17,4 +17,50 @@ class TesterMigrationUntils
         }
         return false;
     }
+
+
+
+    public  function tablesList()
+    {
+        $query = $this->db_connection->prepare("SHOW TABLES");
+        $query->execute();
+        $result = $query->get_result();
+
+        $tables = [];
+        while ($row = $result->fetch_assoc()) {
+            foreach ($row  as $value) {
+                $tables[] = $value;
+            }
+        }
+
+        $query->free_result();
+        return $tables;
+    }
+
+    public  function clearTable($table_name)
+    {
+        $query = $this->db_connection->prepare("TRUNCATE TABLE $table_name");
+        if ($query->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    public  function clearDatabaseExceptSchema()
+    {
+        $tables = $this->tablesList();
+
+        # remove schema_migrations from table list
+        $tables = array_diff($tables, array('schema_migrations'));
+
+        foreach ($tables as $table_name) {
+            if (!$this->clearTable($table_name)) {
+                throw new Exception('Can\'t clear table: '.$table_name);
+            }
+        }
+    }
+
+
+
+
 }

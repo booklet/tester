@@ -1,5 +1,5 @@
 <?php
-class TesterStrinUntils
+trait TesterStrinUntils
 {
 
     # "spec/models/users_test.php" => UsersTest

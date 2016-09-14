@@ -1,5 +1,5 @@
 <?php
-class AssertTempTest extends TesterTestable
+class AssertTempTest
 {
     public function test_fn_to_equal()
     {

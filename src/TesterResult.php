@@ -4,76 +4,96 @@
  **/
 class TesterResult
 {
-    protected $_testable_instance = null;
-    protected $_is_success = false;
-    protected $_status = 'error';
-    protected $_output = '';
-    protected $_test = null; # ReflectionMethod
-    protected $_exception = null; # Exception
+    public $testable_instance = null;
+    public $is_success = false;
+    public $status = 'error';
+    public $output = '';
+    public $test = null; # ReflectionMethod
+    public $exception = null; # Exception
 
-    static public function create_success(Testable $object, ReflectionMethod $test)
+
+    static public function create_success($object, $test)
     {
         $result = new self();
         $result->testable_instance = $object;
-        $result->_is_success = true;
-        $result->_status = 'success';
-        $result->_test = $test;
+
+        $result->status = 'success';
+        $result->test = $test;
         return $result;
     }
 
-    static public function create_pending(Testable $object, ReflectionMethod $test)
+    static public function create_pending($object, $test)
     {
         $result = new self();
         $result->testable_instance = $object;
-        $result->_is_success = true;
-        $result->_status = 'pending';
-        $result->_test = $test;
+
+        $result->status = 'pending';
+        $result->test = $test;
         return $result;
     }
 
-    static public function create_failure(Testable $object, ReflectionMethod $test, Exception $exception)
+    static public function create_failure($object, $test, Exception $exception)
     {
         $result = new self();
         $result->testable_instance = $object;
-        $result->_is_success = false;
-        $result->_status = 'error';
-        $result->_test = $test;
-        $result->_exception = $exception;
+
+        $result->status = 'error';
+        $result->test = $test;
+        $result->exception = $exception;
         return $result;
     }
 
-    public function get_success()
+
+    static public function create($object, $test, $status, Exception $exception = null)
     {
-    	  return $this->_is_success;
+        $result = new self();
+        $result->testable_instance = $object;
+        $result->status = $status;
+        $result->test = $test;
+
+        if (isset($exception)) {
+            $result->exception = $exception;
+        }
+        return $result;
     }
 
-    public function get_status()
-    {
-    	  return $this->_status;
-    }
 
-    public function get_output()
-    {
-    	  return $_output;
-    }
+
+
+
+
+#    public function get_success()
+#    {
+#    	  return $this->is_success;
+#    }
+
+#    public function getstatus()
+#    {
+#    	  return $this->status;
+#    }
+
+#    public function getoutput()
+#    {
+#    	  return $output;
+#    }
+
+#    # set output from ob_get_clean
+#    public function setoutput($value)
+#    {
+#    	  $output = $value;
+#    }
 
     # set output from ob_get_clean
     public function set_output($value)
     {
-    	  $_output = $value;
-    }
-
-    public function get_test()
-    {
-    	  return $this->_test;
+        $this->output = $value;
     }
 
     # get test method name
     public function get_name()
     {
-    	  return $this->_test->getName();
+    	  return $this->test;
     }
-
 
     /**
     * A test class
@@ -84,7 +104,7 @@ class TesterResult
     # get this describle
     public function get_comment()
     {
-    	  return $this->parse_comment( $this->_test->getDocComment() );
+    	  return $this->parse_comment($this->test->getDocComment());
     }
 
     private function parse_comment($comment)
@@ -96,8 +116,8 @@ class TesterResult
       	return implode("\n", $lines);
     }
 
-    public function get_exception()
+    public function getexception()
     {
-    	  return $this->_exception;
+    	  return $this->exception;
     }
 }

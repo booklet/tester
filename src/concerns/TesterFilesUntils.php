@@ -1,5 +1,5 @@
 <?php
-class TesterFilesUntils
+trait TesterFilesUntils
 {
 
     public function getListFilesPathFromDirectoryAndSubfolders($dir)
