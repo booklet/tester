@@ -1,7 +1,7 @@
 <?php
-class AssertTempTest
+class AssertTempTest extends TesterCase
 {
-    public function test_fn_to_equal()
+    public function testFnToEqual()
     {
         Assert::expect('a')->to_equal('a');
 
@@ -12,7 +12,7 @@ class AssertTempTest
         }
     }
 
-    public function test_fn_to_be_not_equal()
+    public function testFnToBeNotEqual()
     {
         Assert::expect('a')->to_be_not_equal('z');
 
@@ -23,7 +23,7 @@ class AssertTempTest
         }
     }
 
-    public function test_fn_to_include_string()
+    public function testFnToIncludeString()
     {
         Assert::expect('lorem ipsum dolor')->to_include_string('ipsum');
 
@@ -34,7 +34,7 @@ class AssertTempTest
         }
     }
 
-    public function test_fn_to_have_attributes()
+    public function testFnToHaveAttributes()
     {
         $test_obj = new stdClass();
         $test_obj->attrib1 = 'value1';

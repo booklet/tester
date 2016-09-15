@@ -1,7 +1,7 @@
 <?php
-class TestsRequest
+class TesterTestRequest
 {
-    # test request add 'TestRequestBKT: true' to header
+    # test request add 'TesterTestRequestBKT: true' to header
     # then application use test database
     public $body;
     public $http_code;
@@ -40,7 +40,7 @@ class TestsRequest
 
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
             "Authorization: $token",
-            'TestRequestBKT: true'
+            'TesterTestRequestBKT: true'
         ]);
 
         $this->body = curl_exec($curl);

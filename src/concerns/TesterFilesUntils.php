@@ -1,7 +1,6 @@
 <?php
 trait TesterFilesUntils
 {
-
     public function getListFilesPathFromDirectoryAndSubfolders($dir)
     {
         $di = new RecursiveDirectoryIterator($dir,RecursiveDirectoryIterator::SKIP_DOTS);
@@ -13,8 +12,7 @@ trait TesterFilesUntils
         return $files;
     }
 
-
-    # filter array of files paths to grab only test files
+    // filter array of files paths to grab only test files
     public function getTestsFiles(Array $files_paths)
     {
         $files = [];
@@ -26,15 +24,12 @@ trait TesterFilesUntils
         return $files;
     }
 
-
-
-    # db/migrate/201607061958_CreateUsersTable.php => 201607061958
+    // db/migrate/201607061958_CreateUsersTable.php => 201607061958
     public function getVersionFromFilename($file_name)
     {
         preg_match("/\d{12}/", $file_name, $output_array);
         return $output_array[0];
     }
-
 
     // get files to tests
     public function getTestFilesFromTestsDirectories()
@@ -50,5 +45,4 @@ trait TesterFilesUntils
 
         return $tests_files_paths;
     }
-
 }

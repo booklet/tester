@@ -18,8 +18,6 @@ trait TesterMigrationUntils
         return false;
     }
 
-
-
     public  function tablesList()
     {
         $query = $this->db_connection->prepare("SHOW TABLES");
@@ -32,7 +30,6 @@ trait TesterMigrationUntils
                 $tables[] = $value;
             }
         }
-
         $query->free_result();
         return $tables;
     }
@@ -50,7 +47,7 @@ trait TesterMigrationUntils
     {
         $tables = $this->tablesList();
 
-        # remove schema_migrations from table list
+        // remove schema_migrations from table list
         $tables = array_diff($tables, array('schema_migrations'));
 
         foreach ($tables as $table_name) {
@@ -60,7 +57,11 @@ trait TesterMigrationUntils
         }
     }
 
-
-
-
+    public function checkIfTestDatabaseIsUpdated()
+    {
+        // check if test database is update to migration
+        if (!$this->isAllMigrationsMade()) {
+            die(  CLIUntils::colorize("\nMigrate tests database first.\n\n", 'FAILURE')  );
+        }
+    }
 }
