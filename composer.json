@@ -3,5 +3,11 @@
     "description": "Test library",
     "require": {
         "php": "^7.0"
+    },
+    "autoload": {
+        "classmap": [
+            "src",
+            "src/concerns"
+        ]
     }
 }

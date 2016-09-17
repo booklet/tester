@@ -1,8 +1,6 @@
 # Tester
 
-
-
 ````
-$tests = new Tester(['db_connection' => MyDB::db(), 'tests_paths' => ['tests']]);
-$tests->runAll();
+$tests = new Tester(['db_connection' => mysqli, 'tests_paths' => ['tests']]);
+$tests->run();
 ````
