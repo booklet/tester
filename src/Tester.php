@@ -60,7 +60,6 @@ class Tester
         $test_counter = $pending_counter = $failures_counter = 0;
 
         foreach($test_methods as $method_name => $method_obj) {
-            $test_start = microtime(true);
             $test_counter++;
 
             // clear database before each test
@@ -81,13 +80,6 @@ class Tester
             }
 
             $this->log($result);
-
-            $test_stop = microtime(true);
-            // if test take too long(>3 sec) show info
-            $execute_time = round(($test_stop-$test_start), 2);
-            if ($execute_time > 3) {
-                echo CLIUntils::colorize("\n\n Test take long time (over 3s): ".get_class($test_class_instance)."->".$method_name." (". $execute_time."sec) \n\n", 'FAILURE');
-            }
         }
 
         $this->summary_test_counter += $test_counter;
