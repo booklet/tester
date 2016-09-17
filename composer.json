@@ -2,7 +2,7 @@
     "name": "boooklet/tester",
     "description": "Test library",
     "require": {
-        "php": "^7.0"
+        "php": ">=5.3.0"
     },
     "autoload": {
         "classmap": [
