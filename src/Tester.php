@@ -1,6 +1,7 @@
 <?php
 class Tester
 {
+    use TesterDisplayUntils;
     use TesterFilesUntils;
     use TesterMigrationUntils;
     use TesterStringUntils;
@@ -16,7 +17,7 @@ class Tester
 
     // colorize output texts
     // need CLIUntils class available
-    // public $colorize_output = true;
+    public $colorize_output = false;
 
     // get test files form paths
     public $tests_paths = [];
@@ -34,6 +35,7 @@ class Tester
         $this->db_connection = $params['db_connection'] ?? $this->db_connection;
         $this->tests_paths = $params['tests_paths'] ?? $this->tests_paths;
         $this->single_test_to_run = $params['single_test_to_run'] ?? $this->single_test_to_run;
+        if (class_exists('CLIUntils')) { $this->colorize_output = true; }
     }
 
     public function run()
@@ -91,12 +93,12 @@ class Tester
     {
         // for display test summary
         if ($this->summary_failures_counter != 0) {
-            echo CLIUntils::colorize("\n\n".$this->summary_test_counter.' examples, '.$this->summary_failures_counter.' failures ', 'FAILURE');
+            echo $this->display("\n\n".$this->summary_test_counter.' examples, '.$this->summary_failures_counter.' failures ', 'FAILURE');
         } else {
-            echo CLIUntils::colorize("\n\n".$this->summary_test_counter.' examples, 0 failures ', 'SUCCESS');
+            echo $this->display("\n\n".$this->summary_test_counter.' examples, 0 failures ', 'SUCCESS');
         }
         if ($this->summary_pending_counter != 0) {
-            echo CLIUntils::colorize($this->summary_pending_counter.' pending', 'WARNING');
+            echo $this->display($this->summary_pending_counter.' pending', 'WARNING');
         }
     }
 

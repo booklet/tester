@@ -1,6 +1,8 @@
 <?php
 class Assert
 {
+    use TesterDisplayUntils;
+
     private static $subject;
     private static $_instance = null;
 
@@ -20,9 +22,9 @@ class Assert
     {
         if (self::$subject !== $val) {
             throw new Exception("Subjects are not equal. Expect: \n\n" .
-                                 CLIUntils::colorize(print_r($val, true), 'FAILURE') .
+                                 self::display(print_r($val, true), 'FAILURE') .
                                  "\n\ngot\n\n".
-                                 CLIUntils::colorize(print_r(self::$subject, true), 'FAILURE') .
+                                 self::display(print_r(self::$subject, true), 'FAILURE') .
                                  "\n\n");
       	}
     }
@@ -34,7 +36,7 @@ class Assert
     {
         if (self::$subject === $val) {
             throw new Exception("Subjects and expect values are equal.\n\n" .
-                                 CLIUntils::colorize(print_r($val, true), 'FAILURE') .
+                                 self::display(print_r($val, true), 'FAILURE') .
                                  "\n\n");
       	}
     }
@@ -56,9 +58,9 @@ class Assert
     {
         if (!is_string($text)) {
             throw new Exception("Subjects are not text. Expect: \n\n" .
-                                 CLIUntils::colorize(print_r(self::$subject, true), 'FAILURE') .
+                                 self::display(print_r(self::$subject, true), 'FAILURE') .
                                  "\n\ngot\n\n".
-                                 CLIUntils::colorize(print_r($text, true), 'FAILURE') .
+                                 self::display(print_r($text, true), 'FAILURE') .
                                  "\n\n");
         }
 
@@ -67,9 +69,9 @@ class Assert
           // OK
         } else {
             throw new Exception("Subjects are not contains text. Expect: \n\n" .
-                                 CLIUntils::colorize(print_r(self::$subject, true), 'FAILURE') .
+                                 self::display(print_r(self::$subject, true), 'FAILURE') .
                                  "\n\nto include\n\n".
-                                 CLIUntils::colorize(print_r($text, true), 'FAILURE') .
+                                 self::display(print_r($text, true), 'FAILURE') .
                                  "\n\n");
         }
     }
@@ -85,9 +87,9 @@ class Assert
             if (is_int($key)) {
                 if (!property_exists(self::$subject, $value)) {
                     throw new Exception("Subjects does not have the attribute. Expect: \n\n" .
-                                         CLIUntils::colorize(print_r(self::$subject, true), 'FAILURE') .
+                                         self::display(print_r(self::$subject, true), 'FAILURE') .
                                          "\n\nto have attribute\n\n".
-                                         CLIUntils::colorize(print_r($value , true), 'FAILURE') .
+                                         self::display(print_r($value , true), 'FAILURE') .
                                          "\n\n");
                 }
             } else {
@@ -95,12 +97,23 @@ class Assert
                   // OK
                 } else {
                     throw new Exception("Subjects does not have the attribute with value. Expect: \n\n" .
-                                         CLIUntils::colorize(print_r(self::$subject, true), 'FAILURE') .
+                                         self::display(print_r(self::$subject, true), 'FAILURE') .
                                          "\n\nto have attribute\n\n".
-                                         CLIUntils::colorize(print_r($key.' => '.$value , true), 'FAILURE') .
+                                         self::display(print_r($key.' => '.$value , true), 'FAILURE') .
                                          "\n\n");
                 }
             }
         }
     }
+
+
+    public static function display($text, $status)
+    {
+        if (class_exists('CLIUntils')) {
+            return CLIUntils::colorize($text, $status);
+        } else {
+            return $text;
+        }
+    }
+
 }

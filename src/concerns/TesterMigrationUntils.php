@@ -61,7 +61,7 @@ trait TesterMigrationUntils
     {
         // check if test database is update to migration
         if (!$this->isAllMigrationsMade()) {
-            die(  CLIUntils::colorize("\nMigrate tests database first.\n\n", 'FAILURE')  );
+            die($this->display("\nMigrate tests database first.\n\n", 'FAILURE'));
         }
     }
 }

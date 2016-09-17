@@ -1,5 +1,6 @@
 #!/usr/bin/php
 <?php
+include 'src/concerns/TesterDisplayUntils.php';
 include 'src/concerns/TesterFilesUntils.php';
 include 'src/concerns/TesterLoger.php';
 include 'src/concerns/TesterMigrationUntils.php';

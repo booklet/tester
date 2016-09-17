@@ -7,15 +7,15 @@ trait TesterLoger
     public function log(TesterResult $result)
     {
         if ($result->status == 'success') {
-            echo CLIUntils::colorize('.', 'SUCCESS');
+            echo $this->display('.', 'SUCCESS');
         }
 
         if ($result->status == 'pending') {
-            echo CLIUntils::colorize('P', 'WARNING');
+            echo $this->display('P', 'WARNING');
         }
 
         if ($result->status == 'error') {
-            echo CLIUntils::colorize('F', 'FAILURE');
+            echo $this->display('F', 'FAILURE');
             printf( "\n\nTest: %s was a failure (lines: %d-%d; file: %s)\n\n"
                 ,$result->get_name()
                 ,$result->get_test()->getStartLine()
