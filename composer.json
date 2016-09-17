@@ -1,0 +1,7 @@
+{
+    "name": "boooklet/tester",
+    "description": "Test library",
+    "require": {
+        "php": "^7.0"
+    }
+}
