@@ -3,7 +3,7 @@ class Tester
 {
     use TesterFilesUntils;
     use TesterMigrationUntils;
-    use TesterStrinUntils;
+    use TesterStringUntils;
     use TesterLoger;
 
     // for test that use database

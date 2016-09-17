@@ -1,5 +1,5 @@
 <?php
-trait TesterStrinUntils
+trait TesterStringUntils
 {
     // "tests/models/users_test.php" => UsersTest
     // "tests/models/UsersTest.php" => UsersTest
