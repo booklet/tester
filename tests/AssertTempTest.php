@@ -44,14 +44,14 @@ class AssertTempTest extends TesterCase
         Assert::expect($test_obj)->to_have_attributes(['attrib1'=>'value1', 'attrib2'=>'value2']);
         Assert::expect($test_obj)->to_have_attributes(['attrib1', 'attrib2'=>'value2']);
 
-        # good attrib, wrong value
+        // good attrib, wrong value
         try {
             Assert::expect($test_obj)->to_have_attributes(['attrib1'=>'wrong_value']);
         } catch (Exception $e) {
             Assert::expect($e->getMessage())->to_include_string('Subjects does not have the attribute with value.');
         }
 
-        # wron attrib, wrong value
+        // wron attrib, wrong value
         try {
             Assert::expect($test_obj)->to_have_attributes(['wrong_attrib'=>'wrong_value']);
         } catch (Exception $e) {

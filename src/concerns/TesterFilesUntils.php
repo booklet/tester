@@ -3,12 +3,13 @@ trait TesterFilesUntils
 {
     public function getListFilesPathFromDirectoryAndSubfolders($dir)
     {
-        $di = new RecursiveDirectoryIterator($dir,RecursiveDirectoryIterator::SKIP_DOTS);
+        $di = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
         $files = [];
         foreach (new RecursiveIteratorIterator($di) as $fileName => $fileInfo) {
             $path = (string) $fileInfo;
             $files[] = $path;
         }
+
         return $files;
     }
 
@@ -21,6 +22,7 @@ trait TesterFilesUntils
                 $files[] = $file_path;
             }
         }
+
         return $files;
     }
 
@@ -28,6 +30,7 @@ trait TesterFilesUntils
     public function getVersionFromFilename($file_name)
     {
         preg_match("/\d{12}/", $file_name, $output_array);
+
         return $output_array[0];
     }
 

@@ -7,11 +7,13 @@ class Assert
     private static $_instance = null;
 
     // start with setup subject variable
-    public static function expect($subject) {
+    public static function expect($subject)
+    {
         self::$subject = $subject;
 
         // for Chaining Static Methods
         if (self::$_instance === null) { self::$_instance = new self; }
+
         return self::$_instance;
     }
 
@@ -106,7 +108,6 @@ class Assert
         }
     }
 
-
     public static function display($text, $status)
     {
         if (class_exists('CLIUntils')) {
@@ -115,5 +116,4 @@ class Assert
             return $text;
         }
     }
-
 }

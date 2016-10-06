@@ -1,8 +1,8 @@
 <?php
 class TesterTestRequest
 {
-    # test request add 'TesterTestRequestBKT: true' to header
-    # then application use test database
+    // test request add 'TesterTestRequestBKT: true' to header
+    // then application use test database
     public $body;
     public $http_code;
 
@@ -31,14 +31,14 @@ class TesterTestRequest
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
                 break;
 
-            default: # GET
+            default: // GET
                 if (!empty($data))
                     $url = sprintf("%s?%s", $url, http_build_query($data));
         }
 
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        #curl_setopt($curl, CURLOPT_HEADER, 1); # headers code
+        // curl_setopt($curl, CURLOPT_HEADER, 1); # headers code
 
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
             "Authorization: $token",

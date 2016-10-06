@@ -8,8 +8,8 @@ class TesterResult
     public $is_success = false;
     public $status = 'error';
     public $output = '';
-    public $test = null; # ReflectionMethod
-    public $exception = null; # Exception
+    public $test = null; // ReflectionMethod
+    public $exception = null; // Exception
 
     static public function create($object, $test, $status, Exception $exception = null)
     {
@@ -20,24 +20,29 @@ class TesterResult
         if (isset($exception)) {
             $result->exception = $exception;
         }
+
         return $result;
     }
 
-    public function get_output() {
+    public function get_output()
+    {
         return $this->output;
     }
 
-    # set output from ob_get_clean
-    public function set_output($value) {
+    // set output from ob_get_clean
+    public function set_output($value)
+    {
         $this->output = $value;
     }
 
-    public function get_test() {
+    public function get_test()
+    {
         return $this->test;
     }
 
-    # get test method name
-    public function get_name() {
+    // get test method name
+    public function get_name()
+    {
         return $this->test->getName();
     }
 }

@@ -1,7 +1,8 @@
 <?php
 trait TesterMigrationUntils
 {
-    public function isAllMigrationsMade() {
+    public function isAllMigrationsMade()
+    {
         // get last migration version
         $migrations_paths = glob($this->migrations_path);
         $last_migration_path = array_pop($migrations_paths);
@@ -15,6 +16,7 @@ trait TesterMigrationUntils
         if ($last_migration_to_migrate_version == $last_database_migration_version) {
             return true;
         }
+
         return false;
     }
 
@@ -26,7 +28,7 @@ trait TesterMigrationUntils
 
         $tables = [];
         while ($row = $result->fetch_assoc()) {
-            foreach ($row  as $value) {
+            foreach ($row as $value) {
                 $tables[] = $value;
             }
         }

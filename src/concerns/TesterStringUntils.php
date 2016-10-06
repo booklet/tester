@@ -6,6 +6,7 @@ trait TesterStringUntils
     public function fileNameFormPathToClass($string)
     {
         $file_name = pathinfo($string)['filename'];
+
         return $this->toCamelCase($file_name);
     }
 
