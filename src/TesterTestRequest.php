@@ -10,6 +10,8 @@ class TesterTestRequest
     {
         $curl = curl_init();
 
+        $this->emptyArrayToStringBrackets($data);
+
         switch ($method) {
             case "POST":
                 curl_setopt($curl, CURLOPT_POST, 1);
@@ -47,5 +49,18 @@ class TesterTestRequest
         $this->http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
         curl_close($curl);
+    }
+
+    // http_build_query remove empty arrays
+    // so we change empty array to string '[]'
+    private function emptyArrayToStringBrackets(&$array)
+    {
+        array_walk($array, function (&$val) {
+            if ($val === []) {
+                $val = '[]';
+            } else if (is_array($val)) {
+                $this->emptyArrayToStringBrackets($val);
+            }
+        });
     }
 }
