@@ -9,6 +9,7 @@ include 'src/Assert.php';
 include 'src/Tester.php';
 include 'src/TesterCase.php';
 include 'src/TesterPendingException.php';
+include 'src/TesterPostFields.php';
 include 'src/TesterResult.php';
 include 'src/TesterTestRequest.php';
 

@@ -12,9 +12,9 @@ class TesterCase
         throw new TesterPendingException('pending');
     }
 
-    public function request($method, $url, $token, Array $data=[])
+    public function request($method, $url, $token, $data = [], $options = [])
     {
-        return new TesterTestRequest($method, $url, $token, $data);
+        return new TesterTestRequest($method, $url, $token, $data, $options);
     }
 
     // SELENIUM WEB DRIVER FUNCTIONS
