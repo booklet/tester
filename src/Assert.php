@@ -111,7 +111,7 @@ class Assert
     public static function display($text, $status)
     {
         if (class_exists('Util')) {
-            return Util::colorize($text, $status);
+            return Util::colorizeConsoleOutput($text, $status);
         } else {
             return $text;
         }
