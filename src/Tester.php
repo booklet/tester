@@ -16,7 +16,7 @@ class Tester
     public $migrations_path = "db/migrate/*.php";
 
     // colorize output texts
-    // need CLIUntils class available
+    // need Util class available
     public $colorize_output = false;
 
     // get test files form paths
@@ -36,7 +36,7 @@ class Tester
         $this->db_connection = $params['db_connection'] ?? $this->db_connection;
         $this->tests_paths = $params['tests_paths'] ?? $this->tests_paths;
         $this->single_test_to_run = $params['single_test_to_run'] ?? $this->single_test_to_run;
-        if (class_exists('CLIUntils')) { $this->colorize_output = true; }
+        if (class_exists('Util')) { $this->colorize_output = true; }
     }
 
     public function run()
@@ -123,7 +123,7 @@ class Tester
                 }
             }
         }
-        
+
         return $test_methods;
     }
 }

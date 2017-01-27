@@ -110,8 +110,8 @@ class Assert
 
     public static function display($text, $status)
     {
-        if (class_exists('CLIUntils')) {
-            return CLIUntils::colorize($text, $status);
+        if (class_exists('Util')) {
+            return Util::colorize($text, $status);
         } else {
             return $text;
         }
