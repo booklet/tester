@@ -4,7 +4,7 @@ trait TesterMigrationUntils
     public function isAllMigrationsMade()
     {
         // get last migration version
-        $migrations_paths = glob($this->migrations_path);
+        $migrations_paths = glob($this->migrations_path . '/*.php');
         $last_migration_path = array_pop($migrations_paths);
         $last_migration_to_migrate_version = $this->getVersionFromFilename($last_migration_path);
 

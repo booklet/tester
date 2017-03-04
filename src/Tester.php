@@ -13,7 +13,7 @@ class Tester
     public $db_connection = null;
 
     // when use database, migration files path is required
-    public $migrations_path = "db/migrate/*.php";
+    public $migrations_path = "db/migrate";
 
     // colorize output texts
     // need CLIUntils class available
