@@ -36,6 +36,7 @@ class Tester
         $this->db_connection = $params['db_connection'] ?? $this->db_connection;
         $this->tests_paths = $params['tests_paths'] ?? $this->tests_paths;
         $this->single_test_to_run = $params['single_test_to_run'] ?? $this->single_test_to_run;
+        $this->migrations_path = $params['migrations_path'] ?? $this->migrations_path;
         if (class_exists('CLIUntils')) { $this->colorize_output = true; }
     }
 
