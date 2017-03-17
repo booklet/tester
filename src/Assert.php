@@ -24,9 +24,9 @@ class Assert
     {
         if (self::$subject !== $val) {
             throw new Exception("Subjects are not equal. Expect: \n\n" .
-                                 self::display(print_r($val, true), 'FAILURE') .
-                                 "\n\ngot\n\n".
-                                 self::display(print_r(self::$subject, true), 'FAILURE') .
+                                 self::display($val) .
+                                 "\n\ngot\n\n" .
+                                 self::display(self::$subject) .
                                  "\n\n");
       	}
     }
@@ -38,7 +38,7 @@ class Assert
     {
         if (self::$subject === $val) {
             throw new Exception("Subjects and expect values are equal.\n\n" .
-                                 self::display(print_r($val, true), 'FAILURE') .
+                                 self::display($val) .
                                  "\n\n");
       	}
     }
@@ -60,9 +60,9 @@ class Assert
     {
         if (!is_string($text)) {
             throw new Exception("Subjects are not text. Expect: \n\n" .
-                                 self::display(print_r(self::$subject, true), 'FAILURE') .
-                                 "\n\ngot\n\n".
-                                 self::display(print_r($text, true), 'FAILURE') .
+                                 self::display(self::$subject) .
+                                 "\n\ngot\n\n" .
+                                 self::display($text) .
                                  "\n\n");
         }
 
@@ -71,9 +71,9 @@ class Assert
           // OK
         } else {
             throw new Exception("Subjects are not contains text. Expect: \n\n" .
-                                 self::display(print_r(self::$subject, true), 'FAILURE') .
-                                 "\n\nto include\n\n".
-                                 self::display(print_r($text, true), 'FAILURE') .
+                                 self::display(self::$subject) .
+                                 "\n\nto include\n\n" .
+                                 self::display($text) .
                                  "\n\n");
         }
     }
@@ -89,9 +89,9 @@ class Assert
             if (is_int($key)) {
                 if (!property_exists(self::$subject, $value)) {
                     throw new Exception("Subjects does not have the attribute. Expect: \n\n" .
-                                         self::display(print_r(self::$subject, true), 'FAILURE') .
-                                         "\n\nto have attribute\n\n".
-                                         self::display(print_r($value , true), 'FAILURE') .
+                                         self::display(self::$subject) .
+                                         "\n\nto have attribute\n\n" .
+                                         self::display($value) .
                                          "\n\n");
                 }
             } else {
@@ -99,19 +99,25 @@ class Assert
                   // OK
                 } else {
                     throw new Exception("Subjects does not have the attribute with value. Expect: \n\n" .
-                                         self::display(print_r(self::$subject, true), 'FAILURE') .
-                                         "\n\nto have attribute\n\n".
-                                         self::display(print_r($key.' => '.$value , true), 'FAILURE') .
+                                         self::display(self::$subject) .
+                                         "\n\nto have attribute\n\n" .
+                                         self::display($key.' => '.$value) .
                                          "\n\n");
                 }
             }
         }
     }
 
-    public static function display($text, $status)
+    public static function display($variable, $status = 'FAILURE')
     {
+        if (class_exists('PP')) {
+            $text = PP::print($variable);
+        } else {
+            $text = print_r($variable, true);
+        }
+
         if (class_exists('CLIUntils')) {
-            return CLIUntils::colorize($text, $status);
+            return CLIUntils::colorizeConsoleOutput($text, $status);
         } else {
             return $text;
         }

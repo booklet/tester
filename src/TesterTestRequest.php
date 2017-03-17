@@ -6,7 +6,7 @@ class TesterTestRequest
     public $body;
     public $http_code;
 
-    public function __construct($method, $url, $token, Array $data=[])
+    public function __construct($method, $url, $token, $data = [], $options = [])
     {
         $curl = curl_init();
 
@@ -15,8 +15,14 @@ class TesterTestRequest
         switch ($method) {
             case "POST":
                 curl_setopt($curl, CURLOPT_POST, 1);
-                if (!empty($data))
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+                if (!empty($data)) {
+                    $flatten_post_array_data = $options['flatten_arrays'] ?? false;
+                    if ($flatten_post_array_data) {
+                        curl_setopt($curl, CURLOPT_POSTFIELDS, (new TesterPostFields())->buildPostFields($data));
+                    } else {
+                        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+                    }
+                }
                 break;
 
             case "PUT":
