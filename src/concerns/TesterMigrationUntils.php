@@ -45,13 +45,8 @@ trait TesterMigrationUntils
         return false;
     }
 
-    public  function clearDatabaseExceptSchema()
+    public  function clearDatabaseExceptSchema($tables)
     {
-        $tables = $this->tablesList();
-
-        // remove schema_migrations from table list
-        $tables = array_diff($tables, array('schema_migrations'));
-
         foreach ($tables as $table_name) {
             if (!$this->clearTable($table_name)) {
                 throw new Exception('Can\'t clear table: '.$table_name);

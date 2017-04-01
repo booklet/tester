@@ -42,17 +42,24 @@ class Tester
 
     public function run()
     {
-        if ($this->db_connection) { $this->checkIfTestDatabaseIsUpdated(); }
+        $tables = [];
+        if ($this->db_connection) {
+            $this->checkIfTestDatabaseIsUpdated();
+
+            $tables = $this->tablesList();
+            // remove schema_migrations from table list
+            $tables = array_diff($tables, array('schema_migrations'));
+        }
 
         $tests_files_paths = $this->getTestFilesFromTestsDirectories();
         foreach ($tests_files_paths as $test_file_path) {
-            $this->runTest($test_file_path);
+            $this->runTest($test_file_path, $tables);
         }
 
         $this->displaySummary();
     }
 
-    private function runTest($test_file_path)
+    private function runTest($test_file_path, $tables)
     {
         include $test_file_path;
         $class_name = $this->fileNameFormPathToClass($test_file_path);
@@ -67,17 +74,7 @@ class Tester
             $test_counter++;
 
             // clear database before each test
-            $skip_clear_database = false;
-            if (property_exists($test_class_instance, 'skip_database_clear_before')) {
-                $arr = $test_class_instance->skip_database_clear_before;
-                if (in_array("all", $arr)) {
-                  $skip_clear_database = true;
-                }
-                if (in_array($method_name, $arr)) {
-                  $skip_clear_database = true;
-                }
-            }
-            if ($this->db_connection && !$skip_clear_database) { $this->clearDatabaseExceptSchema(); }
+            if ($this->db_connection) { $this->clearDatabaseExceptSchema($tables); }
 
             try {
                 $test_class_instance->$method_name();
