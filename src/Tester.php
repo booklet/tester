@@ -74,7 +74,17 @@ class Tester
             $test_counter++;
 
             // clear database before each test
-            if ($this->db_connection) { $this->clearDatabaseExceptSchema($tables); }
+            $skip_clear_database = false;
+            if (property_exists($test_class_instance, 'skip_database_clear_before')) {
+                $arr = $test_class_instance->skip_database_clear_before;
+                if (in_array("all", $arr)) {
+                  $skip_clear_database = true;
+                }
+                if (in_array($method_name, $arr)) {
+                  $skip_clear_database = true;
+                }
+            }
+            if ($this->db_connection && !$skip_clear_database) { $this->clearDatabaseExceptSchema(); }
 
             try {
                 $test_class_instance->$method_name();
