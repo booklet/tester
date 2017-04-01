@@ -84,7 +84,7 @@ class Tester
                   $skip_clear_database = true;
                 }
             }
-            if ($this->db_connection && !$skip_clear_database) { $this->clearDatabaseExceptSchema(); }
+            if ($this->db_connection && !$skip_clear_database) { $this->clearDatabaseExceptSchema($tables); }
 
             try {
                 $test_class_instance->$method_name();
