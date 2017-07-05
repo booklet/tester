@@ -38,11 +38,26 @@ trait TesterMigrationUntils
 
     public  function clearTable($table_name)
     {
-        $query = $this->db_connection->prepare("TRUNCATE TABLE $table_name");
-        if ($query->execute()) {
-            return true;
+        // $query = $this->db_connection->prepare("TRUNCATE TABLE $table_name");
+        // if ($query->execute()) {
+        //     return true;
+        // }
+        // return false;
+
+        $queries = [];
+        $queries[] = "CREATE TABLE `" . $table_name . "_new` LIKE `" . $table_name . "`";
+        $queries[] = "RENAME TABLE `" . $table_name . "` TO `" . $table_name . "_old`, `" . $table_name . "_new` TO `" . $table_name . "`";
+        $queries[] = "DROP TABLE `" . $table_name . "_old`";
+
+        foreach ($queries as $query) {
+            $query_std = $this->db_connection->prepare($query);
+
+            if (!$query_std->execute()) {
+                return false;
+            }
         }
-        return false;
+
+        return true;
     }
 
     public  function clearDatabaseExceptSchema($tables)
