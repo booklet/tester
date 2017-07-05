@@ -76,7 +76,7 @@ trait TesterMigrationUntils
             }
         }
 
-        $this->db_connection->multi_query($truncate_query;
+        $this->db_connection->multi_query($truncate_query);
 
         // handle results to avoid: Commands out of sync; you can't run this command now
         do {
