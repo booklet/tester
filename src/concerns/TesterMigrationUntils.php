@@ -62,11 +62,26 @@ trait TesterMigrationUntils
 
     public  function clearDatabaseExceptSchema($tables)
     {
+        // foreach ($tables as $table_name) {
+        //     if (!$this->clearTable($table_name)) {
+        //         throw new Exception('Can\'t clear table: '.$table_name);
+        //     }
+        // }
+
+        $truncate_query = '';
         foreach ($tables as $table_name) {
-            if (!$this->clearTable($table_name)) {
-                throw new Exception('Can\'t clear table: '.$table_name);
+            $result = $this->db_connection->query("SELECT * FROM $table_name");
+            if ($result->num_rows > 0){
+                $truncate_query .= "TRUNCATE TABLE `" . $table_name . "`;";
             }
         }
+
+        $this->db_connection->multi_query($truncate_query;
+
+        // handle results to avoid: Commands out of sync; you can't run this command now
+        do {
+            $this->db_connection->use_result();
+        } while ($this->db_connection->more_results() && $this->db_connection->next_result());
     }
 
     public function checkIfTestDatabaseIsUpdated()
