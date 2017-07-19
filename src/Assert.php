@@ -17,9 +17,6 @@ class Assert
         return self::$_instance;
     }
 
-    /**
-    * Equals
-    */
     public static function to_equal($val)
     {
         if (self::$subject !== $val) {
@@ -31,9 +28,6 @@ class Assert
       	}
     }
 
-    /**
-    * Not equals
-    */
     public static function to_be_not_equal($val)
     {
         if (self::$subject === $val) {
@@ -43,19 +37,13 @@ class Assert
       	}
     }
 
-    /**
-    * Is valid?
-    */
     public static function to_be_valid()
     {
         if (!self::$subject.isValid()) {
-           throw new Exception('Subjects are not valid.');
+            throw new Exception('Subjects are not valid.');
         }
     }
 
-    /**
-    * Include string
-    */
     public static function to_include_string($text)
     {
         if (!is_string($text)) {
@@ -78,9 +66,6 @@ class Assert
         }
     }
 
-    /**
-    * Have attribute
-    */
     public static function to_have_attributes($attributes)
     {
         foreach ($attributes as $key => $value) {
@@ -105,6 +90,30 @@ class Assert
                                          "\n\n");
                 }
             }
+        }
+    }
+
+    public static function toBeNull()
+    {
+        if (self::$subject != null) {
+            throw new Exception("Subjects are not null. Expect: \n\n" .
+                                 self::display(null) .
+                                 "\n\ngot\n\n" .
+                                 self::display(self::$subject) .
+                                 "\n\n");
+        }
+    }
+
+    public static function toNotBeNull()
+    {
+        if (self::$subject === null) {
+            throw new Exception("Subjects is null.\n\n" .
+                                 self::display($val) .
+                                 "\n\n");
+
+            throw new Exception("Subjects is null. Got: \n\n" .
+                                 self::display(self::$subject) .
+                                 "\n\n");
         }
     }
 
