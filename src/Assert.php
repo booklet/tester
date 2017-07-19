@@ -96,9 +96,7 @@ class Assert
     public static function toBeNull()
     {
         if (self::$subject != null) {
-            throw new Exception("Subjects are not null. Expect: \n\n" .
-                                 self::display(null) .
-                                 "\n\ngot\n\n" .
+            throw new Exception("Subjects are not null. Expect null got:\n\n" .
                                  self::display(self::$subject) .
                                  "\n\n");
         }
@@ -107,13 +105,7 @@ class Assert
     public static function toNotBeNull()
     {
         if (self::$subject === null) {
-            throw new Exception("Subjects is null.\n\n" .
-                                 self::display($val) .
-                                 "\n\n");
-
-            throw new Exception("Subjects is null. Got: \n\n" .
-                                 self::display(self::$subject) .
-                                 "\n\n");
+            throw new Exception("Subjects is null. Expect any value.\n\n");
         }
     }
 

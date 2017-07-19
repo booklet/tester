@@ -59,61 +59,31 @@ class AssertTempTest extends TesterCase
         }
     }
 
-
-    public function testFnToHaveAttributes()
+    public function testToBeNull()
     {
-        $test_obj = new stdClass();
-        $test_obj->attrib1 = null;
+        $val = null;
 
-        Assert::expect($test_obj->attrib1)->toBeNull();
-#        Assert::expect($test_obj)->to_have_attributes(['attrib1'=>'value1', 'attrib2'=>'value2']);
-#        Assert::expect($test_obj)->to_have_attributes(['attrib1', 'attrib2'=>'value2']);
-#
-#        // good attrib, wrong value
-#        try {
-#            Assert::expect($test_obj)->to_have_attributes(['attrib1'=>'wrong_value']);
-#        } catch (Exception $e) {
-#            Assert::expect($e->getMessage())->to_include_string('Subjects does not have the attribute with value.');
-#        }
-#
-#        // wron attrib, wrong value
-#        try {
-#            Assert::expect($test_obj)->to_have_attributes(['wrong_attrib'=>'wrong_value']);
-#        } catch (Exception $e) {
-#            Assert::expect($e->getMessage())->to_include_string('Subjects does not have the attribute with value.');
-#        }
+        Assert::expect($val)->toBeNull();
+
+        try {
+            $val = 'data';
+            Assert::expect($val)->toBeNull();
+        } catch (Exception $e) {
+            Assert::expect($e->getMessage())->to_include_string('Subjects are not null. Expect null got:');
+        }
     }
 
+    public function testToNotBeNull()
+    {
+        $val = 'data';
 
-        public static function toBeNull()
-        {
-            if (self::$subject != null) {
-                throw new Exception("Subjects are not null. Expect: \n\n" .
-                                     self::display(null) .
-                                     "\n\ngot\n\n" .
-                                     self::display(self::$subject) .
-                                     "\n\n");
-            }
+        Assert::expect($val)->toNotBeNull();
+
+        try {
+            $val = null;
+            Assert::expect($val)->toNotBeNull();
+        } catch (Exception $e) {
+            Assert::expect($e->getMessage())->to_include_string('Subjects is null. Expect any value.');
         }
-
-        public static function toNotBeNull()
-        {
-            if (self::$subject === null) {
-                throw new Exception("Subjects is null.\n\n" .
-                                     self::display($val) .
-                                     "\n\n");
-
-                throw new Exception("Subjects is null. Got: \n\n" .
-                                     self::display(self::$subject) .
-                                     "\n\n");
-            }
-        }
-
-
-
-
-
-
-
-
+    }
 }
