@@ -6,6 +6,7 @@
 
 # Ignore bundler config.
 /.bundle
+php-cs-fixer-v2.phar
 
 /vendor/
 

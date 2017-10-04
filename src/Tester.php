@@ -13,7 +13,7 @@ class Tester
     public $db_connection = null;
 
     // when use database, migration files path is required
-    public $migrations_path = "db/migrate";
+    public $migrations_path = 'db/migrate';
 
     // colorize output texts
     // need CLIUntils class available
@@ -31,13 +31,15 @@ class Tester
     public $summary_failures_counter = 0;
     public $summary_pending_counter = 0;
 
-    function __construct(Array $params = [])
+    public function __construct(array $params = [])
     {
         $this->db_connection = $params['db_connection'] ?? $this->db_connection;
         $this->tests_paths = $params['tests_paths'] ?? $this->tests_paths;
         $this->single_test_to_run = $params['single_test_to_run'] ?? $this->single_test_to_run;
         $this->migrations_path = $params['migrations_path'] ?? $this->migrations_path;
-        if (class_exists('CLIUntils')) { $this->colorize_output = true; }
+        if (class_exists('CLIUntils')) {
+            $this->colorize_output = true;
+        }
     }
 
     public function run()
@@ -48,7 +50,7 @@ class Tester
 
             $tables = $this->tablesList();
             // remove schema_migrations from table list
-            $tables = array_diff($tables, array('schema_migrations'));
+            $tables = array_diff($tables, ['schema_migrations']);
         }
 
         $tests_files_paths = $this->getTestFilesFromTestsDirectories();
@@ -71,31 +73,38 @@ class Tester
         $test_counter = $pending_counter = $failures_counter = 0;
 
         foreach ($test_methods as $method_name => $method_obj) {
-            $test_counter++;
+            ++$test_counter;
 
             // clear database before each test
             $skip_clear_database = false;
             if (property_exists($test_class_instance, 'skip_database_clear_before')) {
                 $arr = $test_class_instance->skip_database_clear_before;
-                if (in_array("all", $arr)) {
-                  $skip_clear_database = true;
+                if (in_array('all', $arr)) {
+                    $skip_clear_database = true;
                 }
                 if (in_array($method_name, $arr)) {
-                  $skip_clear_database = true;
+                    $skip_clear_database = true;
                 }
             }
-            if ($this->db_connection && !$skip_clear_database) { $this->clearDatabaseExceptSchema($tables); }
+            if ($this->db_connection && !$skip_clear_database) {
+                $this->clearDatabaseExceptSchema($tables);
+            }
 
             try {
+                if (method_exists($test_class_instance, 'setUp')) {
+                    $test_class_instance->setUp();
+                }
                 $test_class_instance->$method_name();
+                if (method_exists($test_class_instance, 'tearDown')) {
+                    $test_class_instance->tearDown();
+                }
                 $result = TesterResult::create($test_class_instance, $method_obj, 'success');
-            }
-            catch (Exception $ex) {
+            } catch (Exception $ex) {
                 if ($ex instanceof TesterPendingException) {
-                    $pending_counter++;
+                    ++$pending_counter;
                     $result = TesterResult::create($test_class_instance, $method_obj, 'pending');
                 } else {
-                    $failures_counter++;
+                    ++$failures_counter;
                     $result = TesterResult::create($test_class_instance, $method_obj, 'error', $ex);
                 }
             }
@@ -126,10 +135,10 @@ class Tester
         // reports information about a class
         $reflection = new ReflectionClass($class);
         $test_methods = [];
-        foreach($reflection->GetMethods() as $method_obj) {
+        foreach ($reflection->GetMethods() as $method_obj) {
             $method_name = $method_obj->getName();
             // if method start with "test_"
-            if (strlen($method_name) > 4 && substr($method_name, 0, 4 ) == 'test') {
+            if (strlen($method_name) > 4 && substr($method_name, 0, 4) == 'test') {
                 // filter if pass single test params
                 if ($this->single_test_to_run) {
                     list($class_name, $test_method_name) = explode(':', $this->single_test_to_run);
