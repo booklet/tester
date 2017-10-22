@@ -9,7 +9,7 @@ trait TesterMigrationUntils
         $last_migration_to_migrate_version = $this->getVersionFromFilename($last_migration_path);
 
         // get last migration version from database
-        $query = "SELECT version FROM schema_migrations ORDER BY version DESC LIMIT 1";
+        $query = 'SELECT version FROM schema_migrations ORDER BY version DESC LIMIT 1';
         $result = mysqli_query($this->db_connection, $query);
         $last_database_migration_version = mysqli_fetch_assoc($result)['version'];
 
@@ -20,9 +20,9 @@ trait TesterMigrationUntils
         return false;
     }
 
-    public  function tablesList()
+    public function tablesList()
     {
-        $query = $this->db_connection->prepare("SHOW TABLES");
+        $query = $this->db_connection->prepare('SHOW TABLES');
         $query->execute();
         $result = $query->get_result();
 
@@ -33,10 +33,11 @@ trait TesterMigrationUntils
             }
         }
         $query->free_result();
+
         return $tables;
     }
 
-    public  function clearTable($table_name)
+    public function clearTable($table_name)
     {
         // $query = $this->db_connection->prepare("TRUNCATE TABLE $table_name");
         // if ($query->execute()) {
@@ -45,9 +46,9 @@ trait TesterMigrationUntils
         // return false;
 
         $queries = [];
-        $queries[] = "CREATE TABLE `" . $table_name . "_new` LIKE `" . $table_name . "`";
-        $queries[] = "RENAME TABLE `" . $table_name . "` TO `" . $table_name . "_old`, `" . $table_name . "_new` TO `" . $table_name . "`";
-        $queries[] = "DROP TABLE `" . $table_name . "_old`";
+        $queries[] = 'CREATE TABLE `' . $table_name . '_new` LIKE `' . $table_name . '`';
+        $queries[] = 'RENAME TABLE `' . $table_name . '` TO `' . $table_name . '_old`, `' . $table_name . '_new` TO `' . $table_name . '`';
+        $queries[] = 'DROP TABLE `' . $table_name . '_old`';
 
         foreach ($queries as $query) {
             $query_std = $this->db_connection->prepare($query);
@@ -60,19 +61,35 @@ trait TesterMigrationUntils
         return true;
     }
 
-    public  function clearDatabaseExceptSchema($tables)
+    public function clearDatabaseExceptSchema($tables)
     {
+        // truncate wszystkich table za wolny
         // foreach ($tables as $table_name) {
         //     if (!$this->clearTable($table_name)) {
         //         throw new Exception('Can\'t clear table: '.$table_name);
         //     }
         // }
 
+        // truncate tabel z rekordami problematyczny, nie czysci tabel gdzie byly rekordy,
+        // przez co w kolejnych testach niemozna zakladac ze Id startuje od 1
+        // $truncate_query = '';
+        // foreach ($tables as $table_name) {
+        //     $result = $this->db_connection->query("SELECT * FROM $table_name");
+        //     if ($result->num_rows > 0){
+        //         $truncate_query .= "TRUNCATE TABLE `" . $table_name . "`;";
+        //     }
+        // }
+
+        // Czyscenie tabel na podstawie pola Auto_increment, jesli tabela byla
+        // pusta to zawsze Auto_increment = 1
         $truncate_query = '';
         foreach ($tables as $table_name) {
-            $result = $this->db_connection->query("SELECT * FROM $table_name");
-            if ($result->num_rows > 0){
-                $truncate_query .= "TRUNCATE TABLE `" . $table_name . "`;";
+            $result = $this->db_connection->query("SHOW TABLE STATUS WHERE name = '" . $table_name . "' ");
+            while ($row = $result->fetch_assoc()) {
+                $table_status = $row;
+            }
+            if ($table_status['Rows'] > 0 or $table_status['Auto_increment'] > 1) {
+                $truncate_query .= 'TRUNCATE TABLE `' . $table_name . '`;';
             }
         }
 
