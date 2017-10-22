@@ -80,8 +80,8 @@ trait TesterMigrationUntils
         //     }
         // }
 
-        // Czyscenie tabel na podstawie pola Auto_increment, jesli tabela byla
-        // pusta to zawsze Auto_increment = 1
+        // Czyszczenie tabel na podstawie pola Rows i Auto_increment,
+        // jesli tabela byla pusta to zawsze Auto_increment = 1
         $truncate_query = '';
         foreach ($tables as $table_name) {
             $result = $this->db_connection->query("SHOW TABLE STATUS WHERE name = '" . $table_name . "' ");
