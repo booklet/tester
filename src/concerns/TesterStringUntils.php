@@ -1,13 +1,30 @@
 <?php
 trait TesterStringUntils
 {
-    // "tests/models/users_test.php" => UsersTest
-    // "tests/models/UsersTest.php" => UsersTest
-    public function fileNameFormPathToClass($string)
+    // "tests/modules/user/models/users_test.php" => UsersTest
+    // "tests/modules/user/models/UsersTest.php" => UsersTest
+    public function fileNameFormPathToClass($path)
     {
-        $file_name = pathinfo($string)['filename'];
+        $class_name = pathinfo($path)['filename'];
 
-        return $this->toCamelCase($file_name);
+        // Support to load tests who use namespaces
+        $class_name = $this->updateClassNameIfUseNamespace($class_name, $path);
+
+        return $this->toCamelCase($class_name);
+    }
+
+    // TODO move this, its not string until
+    private function updateClassNameIfUseNamespace($class_name, $path)
+    {
+        if (strpos($path, 'tests/modules/') !== false) {
+            $module_name = explode('/', $path)[2];
+            $namespace_class_name = $module_name . '\\' . $class_name;
+            if (class_exists($namespace_class_name)) {
+                return $namespace_class_name;
+            }
+        }
+
+        return $class_name;
     }
 
     // 'one-two-three-four', 'one_two_three_four' => 'OneTwoThreeFour'
