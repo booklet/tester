@@ -142,6 +142,12 @@ class Tester
                 // filter if pass single test params
                 if ($this->single_test_to_run) {
                     list($class_name, $test_method_name) = explode(':', $this->single_test_to_run);
+
+                    // support namespaces
+                    if (strpos($class_name, '/') !== false) {
+                        $class_name = str_replace('/', '\\', $class_name);
+                    }
+
                     if ($class_name == get_class($class) && $test_method_name == $method_name) {
                         $test_methods[$method_name] = $method_obj;
                     }
