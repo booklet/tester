@@ -18,6 +18,7 @@ trait TesterStringUntils
     {
         if (strpos($path, 'tests/modules/') !== false) {
             $module_name = explode('/', $path)[2];
+            $module_name = str_replace('_', '', ucwords($module_name));
             $namespace_class_name = $module_name . '\\' . $class_name;
             if (class_exists($namespace_class_name)) {
                 return $namespace_class_name;
