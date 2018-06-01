@@ -14,7 +14,7 @@ trait TesterFilesUntils
     }
 
     // filter array of files paths to grab only test files
-    public function getTestsFiles(Array $files_paths)
+    public function getTestsFiles(array $files_paths)
     {
         $files = [];
         foreach ($files_paths as $file_path) {
@@ -40,7 +40,9 @@ trait TesterFilesUntils
         // list all files in tests directories
         $files_paths = [];
         foreach ($this->tests_paths as $path) {
-          $files_paths = array_merge($files_paths, $this->getListFilesPathFromDirectoryAndSubfolders($path));
+            if (file_exists($path)) {
+                $files_paths = array_merge($files_paths, $this->getListFilesPathFromDirectoryAndSubfolders($path));
+            }
         }
 
         // grab only tests files _test.php
