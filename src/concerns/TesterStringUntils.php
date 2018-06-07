@@ -16,7 +16,7 @@ trait TesterStringUntils
     // TODO move this, its not string until
     private function updateClassNameIfUseNamespace($class_name, $path)
     {
-        if (strpos($path, 'tests/modules/') !== false or strpos($path, 'app/modules/') !== false) {
+        if (strpos($path, 'tests/modules/') !== false or strpos($path, 'app/modules/') !== false or strpos($path, 'app/plugins/') !== false) {
             $module_name = explode('/', $path)[2];
             $module_name = str_replace('_', '', ucwords($module_name, '_'));
             $namespace_class_name = $module_name . '\\' . $class_name;
