@@ -65,6 +65,13 @@ class Tester
     {
         include $test_file_path;
         $class_name = $this->fileNameFormPathToClass($test_file_path);
+
+        // Hack to work tet in Utils repo
+        // TODO FIX IT!!! and remove
+        if (StringUntils::isInclude($test_file_path, 'utils/' . $class_name)) {
+            $class_name = 'Utils\\' . $class_name;
+        }
+
         $test_class_instance = new $class_name();
 
         $test_methods = $this->getTestMethodsFormClass($test_class_instance);
