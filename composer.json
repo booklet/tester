@@ -1,5 +1,5 @@
 {
-    "name": "boooklet/tester",
+    "name": "booklet/tester",
     "description": "Test library",
     "require": {
         "php": ">=5.3.0"
